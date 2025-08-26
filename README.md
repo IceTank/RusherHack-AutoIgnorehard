@@ -1,8 +1,6 @@
-# RusherHack Example Plugin
+# RusherHack AutoIgnorehard Plugin
 
-An example implementation of a RusherHack plugin. 
-
-RusherHack plugins are custom add-ons written by developers to add new features to RusherHack.
+This plugin automatically runs the `/ignorehard <playername>` command on any player that sends a discord invite in chat.
 
 ## Setting up the Development Environment
 

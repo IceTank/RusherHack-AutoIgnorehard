@@ -1,5 +1,5 @@
 {
-  "Plugin-Class": "org.example.ExamplePlugin",
+  "Plugin-Class": "org.icetank.AutoIgnorehardPlugin",
   "Name": "${project.plugin_name}",
   "Version": "${project.plugin_version}",
   "Description": "Example rusherhack plugin",
