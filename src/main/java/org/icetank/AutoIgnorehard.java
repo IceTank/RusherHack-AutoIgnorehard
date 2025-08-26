@@ -102,7 +102,7 @@ public class AutoIgnorehard extends ToggleableModule {
     }
 
     private void logMessageToFile(String username, String message) {
-        Path path = Path.of(".").resolve("rusherhack/AutoIgnorehard/ignorelog.txt");
+        Path path = RusherHackAPI.getConfigPath().resolve("AutoIgnorehard/ignorelog.txt");
         String timestamp = LocalDateTime.now().toString();
         try {
             try {

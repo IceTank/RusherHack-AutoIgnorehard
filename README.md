@@ -2,6 +2,8 @@
 
 This plugin automatically runs the `/ignorehard <playername>` command on any player that sends a discord invite in chat.
 
+Thanks to @shaybox for the original idea.
+
 ## Setting up the Development Environment
 
 ### Installing Java Development Kit (JDK)
