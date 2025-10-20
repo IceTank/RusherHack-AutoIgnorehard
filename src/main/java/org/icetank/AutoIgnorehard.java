@@ -77,17 +77,17 @@ public class AutoIgnorehard extends ToggleableModule {
                     .results()
                     .findFirst();
             if (matchResult.isPresent()) {
-                if (!handleChatMessage(chatPacket, matchResult.get().group(1), messageContent)) {
+                if (!handleChatMessage(chatPacket, matchResult.get().group(1), matchResult.get().group(2), messageContent)) {
                     event.setCancelled(true);
                 }
             }
         }
     }
 
-    private boolean handleChatMessage(ClientboundSystemChatPacket chatPacket, String username, String message) {
-        if (hasSpamTrigger(message)) {
+    private boolean handleChatMessage(ClientboundSystemChatPacket chatPacket, String username, String message, String fullMessage) {
+        if (hasSpamTrigger(fullMessage)) {
             String command;
-            if (username.startsWith("<") || isWhisper(message)) {
+            if (username.startsWith("<") || isWhisper(fullMessage)) {
                 command = "ignorehard " + username.replaceAll("[<>]", "");
             } else {
                 command = "ignoredeathmsgs " + username;
@@ -95,10 +95,10 @@ public class AutoIgnorehard extends ToggleableModule {
             Objects.requireNonNull(mc.getConnection()).sendCommand(command);
 
             if (logToFile.getValue()) {
-                logMessageToFile(username.replaceAll("[<>]", ""), message);
+                logMessageToFile(username.replaceAll("[<>]", ""), fullMessage);
             }
             if (logToChat.getValue()) {
-                logMessageToChat(username.replaceAll("[<>]", ""), message, "/" + command);
+                logMessageToChat(username.replaceAll("[<>]", ""), fullMessage, "/" + command);
             }
             return false; // Cancel the event to prevent the message from being displayed in chat
         }
