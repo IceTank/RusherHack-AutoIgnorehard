@@ -11,7 +11,6 @@ import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.events.network.EventPacket;
 import org.rusherhack.client.api.feature.module.ModuleCategory;
 import org.rusherhack.client.api.feature.module.ToggleableModule;
-import org.rusherhack.client.api.setting.ColorSetting;
 import org.rusherhack.core.event.subscribe.Subscribe;
 import org.rusherhack.core.logging.ILogger;
 import org.rusherhack.core.setting.BooleanSetting;
@@ -38,6 +37,8 @@ public class AutoIgnorehard extends ToggleableModule {
      */
     private final BooleanSetting logToChat = new BooleanSetting("Chat", "Logs ignored players and messages to chat", true);
     private final BooleanSetting logToFile = new BooleanSetting("File", "Logs ignored players and messages to file", true);
+    private final BooleanSetting ignoreShortMessages = new BooleanSetting("IgnoreShortMessages", "Ignores short chat messages", false);
+    private final BooleanSetting ignoreShortOnlyBep = new BooleanSetting("Only bep", true);
 
     private final ILogger logger = RusherHackAPI.createLogger("AutoIgnorehard");
 
@@ -47,10 +48,13 @@ public class AutoIgnorehard extends ToggleableModule {
     public AutoIgnorehard() {
         super("AutoIgnorehard", "Auto /ignorehard players that spam chat with discord invites", ModuleCategory.CLIENT);
 
+        ignoreShortMessages.addSubSettings(ignoreShortOnlyBep);
+
         //register settings
         this.registerSettings(
                 this.logToChat,
-                this.logToFile
+                this.logToFile,
+                ignoreShortMessages
         );
     }
 
@@ -97,6 +101,12 @@ public class AutoIgnorehard extends ToggleableModule {
                 logMessageToChat(username.replaceAll("[<>]", ""), message, "/" + command);
             }
             return false; // Cancel the event to prevent the message from being displayed in chat
+        }
+        if (ignoreShortMessages.getValue() && message.length() <= 3) {
+            if (ignoreShortOnlyBep.getValue()) {
+                return !message.equalsIgnoreCase("bep");
+            }
+            return false;
         }
         return true;
     }
